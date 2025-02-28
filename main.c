@@ -2,52 +2,59 @@
 #include <stdlib.h>
 
 
-struct ListNode* removeElements(struct ListNode* head, int value);
+//function definirion
+struct ListNode* reverseList(struct ListNode* head);
 
+//defines the listnode structure
 struct ListNode{
     int val;
     struct Node *next;
 };
 
-
-
 int main()
 {
     struct ListNode *head = NULL;
 
-    push(&head,2);
-    push(&head,3);
-    push(&head,6);
-    push(&head,4);
-    push(&head,5);
-    push(&head,6);
-    push(&head,7);
-    push(&head,8);
+    push(&head,1);
+    push(&head, 2);
+    push(&head, 3);
 
-    printf("before removing elements: \n");
 
+
+    printf("linked list before reversing:\n");
     print(head);
 
-    removeElements(head, 6);
 
-    printf("after removing elements: \n");
+    struct ListNode* newNode = reverseList(head);
+    printf("linked list after reversing:\n");
 
-    print(head);
+    print(newNode);
+
+
+
+
+
+
 
 
 }
 
-//adds new nodes to the front of the linked list
+//push function - adds new nodes to the front
 void push(struct ListNode** head_ref, int val){
+    //allocate memory for tha node
     struct ListNode *new_node = (struct ListNode*)malloc(sizeof(struct ListNode));
+    //put data in new node
     new_node->val = val;
+    //make new node piont to head
     new_node->next = (*head_ref);
+    //make new node = head
     (*head_ref) = new_node;
 }
 
 
-//runs through the linked list and prints every node
+//print function
 void print(struct ListNode* n){
+    //runs through the linked list and prints every value holded in the nodes
     while(n!=NULL){
         printf("%d ",n->val);
         n = n->next;
@@ -55,36 +62,31 @@ void print(struct ListNode* n){
     printf("\n");
 }
 
-struct ListNode* removeElements(struct ListNode* head, int value) {
+
+
+
+//function reverses the linkedlist
+struct ListNode* reverseList(struct ListNode* head) {
+
+
     struct ListNode* temp = head;
     struct ListNode* prev = NULL;
+    struct ListNode* ahead = NULL;
 
-   //runs through the linked list
-    while(temp != NULL){
+    // loop runs through the linked list
+    while (temp != NULL) {
 
-            //if the current node needs to be deleted and its not the first node
-            if(temp->val == value && prev != NULL){
+        // stores the next after temp
+        ahead = temp->next;
 
-                prev->next = temp->next;
-                free(temp);
-                temp = prev-> next;
-            }
-            //if the current node needs to be deleted and its the first node
-            else if(temp->val == value && prev == NULL){
-                head = temp->next;
-                free(temp);
-                temp = head;
-            }
-            //moves through the linked list
-            else{
-                prev = temp;
-                temp = temp->next;
-            }
+        // switches the positions of ahead and prev
+        temp->next = prev;
+
+        // pointers move through linked list
+        prev = temp;
+        temp = ahead;
     }
 
-    return head;
+    //returns prev which is the new head
+    return prev;
 }
-
-
-
-
